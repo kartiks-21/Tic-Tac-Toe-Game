@@ -1,0 +1,88 @@
+board = ["-","-","-", # Setting up the board
+         "-","-","-",
+         "-","-","-"]
+
+game_still_going = True
+winner = None
+current_player= "X"
+
+def display_board(): # Displaying the board
+    print(board[0] + "|" + board[1] + "|" + board[2])
+    print(board[3] + "|" + board[4] + "|" + board[5])
+    print(board[6] + "|" + board[7] + "|" + board[8])
+
+def play_game():
+    display_board()  # Display initial board
+    while(game_still_going):
+        handle_turn(current_player)  # Check of if game over
+        check_if_game_over()
+        flip_player()     # Flip_player
+
+    if(winner =="X" or winner == "O"): # If game ends check for Winner or Tie
+        print(winner + " won")
+    elif(winner == None):
+        print("Tie")
+
+
+def check_if_game_over():
+    check_win()   # Function to check winner
+    check_tie()   # Function to check Tie
+
+def check_win():
+    global  game_still_going
+    global winner                                                    
+    row1 = board[0] == board[1] == board[2] != "-"      # Check rows
+    row2 = board[3] == board[4] == board[5] != "-"
+    row3 = board[6] == board[7] == board[8] != "-"
+    if row1 or row2 or row3:
+        game_still_going = False
+    if row1:
+        winner = board[0]
+    if row2:
+        winner = board[3]
+    if row3:
+        winner = board[6]
+    col1 = board[0] == board[3] == board[6] != "-"      # Check columns
+    col2 = board[1] == board[4] == board[7] != "-"
+    col3 = board[2] == board[5] == board[8] != "-"
+    if col1 or col2 or col3:
+        game_still_going = False
+    if col1:
+        winner = board[0]
+    if col2:
+        winner = board[1]
+    if col3:
+        winner = board[2]
+    diag1 = board[0] == board[4] == board[8] != "-"     # Check diagonals
+    diag2 = board[2] == board[4] == board[6] != "-"
+    if diag1 or diag2:
+        game_still_going = False
+    if diag1:
+        winner = board[0]
+    if diag2:
+        winner = board[2]
+    return
+
+def check_tie():        # Check for Tie
+    global  game_still_going
+    if "-" not in board:
+        game_still_going = False
+
+def handle_turn(player):   # Assign turns
+    print(player + " 's turn")
+    position = int(input("Choose a position frm 1 to 9: "))
+    valid = False
+    while not valid:
+        if position not in ['1','2','3','4','5','6','7','8','9']:
+            valid = True
+        board[position-1] = current_player
+        display_board()
+
+def flip_player():      # Flip player
+    global current_player
+    if (current_player == "X"):
+        current_player= "O"
+    elif (current_player == "O"):
+        current_player = "X"
+
+play_game()     # Start the game
